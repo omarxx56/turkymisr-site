@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تركي مصر</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            direction: rtl;
+            text-align: right;
+        }
+        header {
+            background-color: #ff0000;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+        nav {
+            background-color: #333;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+        nav a:hover {
+            background-color: #ff0000;
+            color: #000;
+        }
+        .container {
+            padding: 20px;
+        }
+        .product {
+            border: 1px solid #fff;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #222;
+            text-align: center;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .admin-panel {
+            display: none;
+        }
+        button {
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #fff;
+            color: #ff0000;
+        }
+        form input, form button {
+            margin: 5px 0;
+        }
+        form input[type="file"] {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>تركي مصر</h1>
+    </header>
+    <nav>
+        <a href="#" onclick="showSection('products')">المنتجات</a>
+        <a href="#" onclick="showSection('admin')">لوحة التحكم</a>
+    </nav>
+    <div class="container">
+        <!-- قسم المنتجات -->
+        <section id="products">
+            <h2>المنتجات المتاحة</h2>
+            <div id="product-list"></div>
+        </section>
+        <!-- لوحة التحكم -->
+        <section id="admin" class="admin-panel">
+            <h2>لوحة التحكم</h2>
+            <form id="add-product-form">
+                <input type="text" id="product-name" placeholder="اسم المنتج" required><br>
+                <input type="number" id="product-price" placeholder="السعر" required><br>
+                <input type="file" id="product-image" accept="image/*" required><br>
+                <button type="submit">إضافة المنتج</button>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.container section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        const productList = document.getElementById('product-list');
+
+        // إضافة المنتج من لوحة التحكم
+        document.getElementById('add-product-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('product-name').value;
+            const price = document.getElementById('product-price').value;
+            const fileInput = document.getElementById('product-image');
+            const image = URL.createObjectURL(fileInput.files[0]);
+
+            const productDiv = document.createElement('div');
+            productDiv.className = 'product';
+            productDiv.innerHTML = `
+                <img src="${image}" alt="${name}">
+                <h3>${name}</h3>
+                <p>السعر: ${price} جنيه</p>
+            `;
+            productList.appendChild(productDiv);
+
+            // إعادة ضبط النموذج بعد الإضافة
+            document.getElementById('add-product-form').reset();
+        });
+
+        // عرض القسم الافتراضي
+        showSection('products');
+    </script>
+</body>
+</html>
